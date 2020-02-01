@@ -23,28 +23,38 @@ class Cat {
     draw() {
         noStroke();
         fill('red');
-        ellipse(this.location.x, this.location.y, 300);
+        imageMode('center');
 
-        this.drawEye(createVector(this.location.x - 60, this.location.y - 50));
-        this.drawEye(createVector(this.location.x + 60, this.location.y - 50));
+        // 3344 3668
+        // 530
+
+        let h = width;
+        let w = 0.9116684841875682 * h;
+        image(catImage, this.location.x, this.location.y, w, h);
+
+        this.drawEye(createVector(this.location.x - width * 0.14, this.location.y + width * 0.0625));
+        this.drawEye(createVector(this.location.x + width * 0.14, this.location.y + width * 0.0625));
     }
 
-    drawEye(location: p5.Vector) {
-        if (this.spooked)
-            fill('black');
-        else
-            fill('white');  
-            
-        ellipse(location.x, location.y, 50);
-      
+    drawEye(location: p5.Vector) {    
         if (this.lookingAt) {
             let t = p5.Vector.sub(this.lookingAt, location)
                 .mult(.15)
-                .limit(15);
+                .limit(width * 0.025);
             location.add(t);
         }
         
+        this.drawupil(location);
+    }
+
+    drawupil(location: p5.Vector) {
+        // 402 408
+        let ratio = 0.9852941176470589;
+        let h = width * .1,
+            w = h * ratio;
+
         fill('black');
-        ellipse(location.x, location.y, 15, 20);
+        image(pupilImage, location.x, location.y, w, h);
+        // ellipse(location.x, location.y, 15, 20);
     }
 }
