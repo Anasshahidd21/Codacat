@@ -1,5 +1,9 @@
 let images: p5.Image[];
+let backgroundImage: p5.Image;
+let themeSong: p5.SoundFile;
+
 let dance: Move[];
+let speed = 30;
 
 function preload() {
     images = [];
@@ -7,21 +11,29 @@ function preload() {
     images.push(loadImage('../assets/dab.png'));
     images.push(loadImage('../assets/fancy.png'));
     images.push(loadImage('../assets/yeah!.png'));
+
+    backgroundImage = loadImage('../assets/backgroundalt.jpg');
+
+    themeSong = loadSound('../assets/Theme.mp3');
 }
 
 function setup() {
     // Create canvas
-    let canvas = createCanvas(windowWidth, windowHeight);
-    if (document.getElementById('canvas')) canvas.parent('canvas');
-
-    // Config
+    createCanvas(windowWidth, windowHeight);
     imageMode(CENTER);
+    
+    themeSong.loop();
 
-    // Initialize dance
+    createDance();
+}
+
+function createDance() {
+    speed = 32;
     dance = [
+        Move.Yeah,
         Move.Cheer,
         Move.Dab,
-        Move.Cheer
+        Move.Fancy
     ];
 }
 
@@ -30,10 +42,10 @@ function windowResized() {
 }
   
 function draw() {
-    background('white');
+    imageMode(CORNER);
+    background(backgroundImage);
 
-    const speed = 30;
-    const index = floor(frameCount / speed) % (images.length - 1);    
+    const index = floor(frameCount / speed) % (dance.length); 
 
     const ratio =  images[0].height / images[0].width;
     const w = Math.min(width, height),
@@ -41,5 +53,6 @@ function draw() {
 
     const img = images[dance[index]];
 
+    imageMode(CENTER);
     image(img, floor(width / 2), floor(height / 2), w, h);
 }

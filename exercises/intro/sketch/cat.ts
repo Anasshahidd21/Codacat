@@ -3,16 +3,16 @@ class Cat {
         public location: p5.Vector,
         public isHidden: boolean = false,
         public lookingAt: p5.Vector = undefined,
-        public spooked: boolean = false
+        public surprised: boolean = false
     ) {}
 
     reset() {
         this.isHidden = true;
         this.lookingAt = undefined;
-        this.spooked = false;
+        this.surprised = false;
     }
 
-    show() {
+    showYourself() {
         this.isHidden = false;
     }
 
@@ -25,12 +25,13 @@ class Cat {
         fill('red');
         imageMode('center');
 
-        // 3344 3668
-        // 530
-
-        let h = width;
-        let w = 0.9116684841875682 * h;
-        image(catImage, this.location.x, this.location.y, w, h);
+        let img = this.surprised
+            ? catSurprised
+            : catImage;
+        let ratio = img.height / img.width;
+        let w = 500,
+            h = w * ratio;
+        image(img, this.location.x, this.location.y, w, h);
 
         this.drawEye(createVector(this.location.x - width * 0.14, this.location.y + width * 0.0625));
         this.drawEye(createVector(this.location.x + width * 0.14, this.location.y + width * 0.0625));
@@ -44,17 +45,16 @@ class Cat {
             location.add(t);
         }
         
-        this.drawupil(location);
+        if (!this.surprised)
+            this.drawupil(location);
     }
 
     drawupil(location: p5.Vector) {
-        // 402 408
         let ratio = 0.9852941176470589;
         let h = width * .1,
             w = h * ratio;
 
         fill('black');
         image(pupilImage, location.x, location.y, w, h);
-        // ellipse(location.x, location.y, 15, 20);
-    }
+\    }
 }
