@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"postinstall": "(cd exercises/intro && npm install)&&(cd ../bubble && npm install);"
+		"postinstall": "(cd exercises/intro && npm install)&&(cd ../bubble && npm install)&&(cd ../dancing && npm install)&&(cd ../else-if && npm install)&&(cd ../foreach && npm install)&&(cd ../if && npm install)&&(cd ../speech && npm install)"
 	},
 	"repository": {
 		"type": "git",
