@@ -2,38 +2,48 @@ let cat: Cat;
 
 let catImage: p5.Image;
 let pupilImage: p5.Image;
+let backgroundImage: p5.Image;
+let catSurprised: p5.Image;
+let themeSong: p5.SoundFile;
 
 function preload() {
     catImage = loadImage('../assets/eyecat.png');
     pupilImage = loadImage('../assets/pupil.png');
+    backgroundImage = loadImage('../assets/background.jpg');
+    catSurprised = loadImage('../assets/eyecatsurprise.png');
+    themeSong = loadSound('../assets/Theme.mp3');
 }
 
 function setup() {
     // Create canvas
-    let canvas = createCanvas(800, 800);
-    if (document.getElementById('canvas')) canvas.parent('canvas');
-
+    let canvas = createCanvas(600, 600);
+    
     // Intialize universe
     cat = new Cat(
-        createVector(width / 2, height - width * 0.3125)
+        createVector(width / 2, height - 250)
     );
-}
 
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+
+    themeSong.loop();
 }
   
+function main() {
+    cat.showYourself();
+    cat.lookAt(mouseX, mouseY);
+
+    if (mouseIsPressed)
+        cat.surprised = true;
+}
+
 function draw() {
     background('white');
+
+    imageMode(CORNER);
+    background(backgroundImage);
 
     cat.reset();
     main();
 
-    const speed = 5;
-    cat.location.x = width / 2;
-    cat.location.y = cat.isHidden
-        ? Math.min(height - height * 0.3125, cat.location.y + speed)
-        : Math.max(height * 0.4375, cat.location.y - speed);
-
-    cat.draw();
+    if (!cat.isHidden) 
+        cat.draw();
 }

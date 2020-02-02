@@ -1,19 +1,19 @@
 var Cat = (function () {
-    function Cat(location, isHidden, lookingAt, spooked) {
+    function Cat(location, isHidden, lookingAt, surprised) {
         if (isHidden === void 0) { isHidden = false; }
         if (lookingAt === void 0) { lookingAt = undefined; }
-        if (spooked === void 0) { spooked = false; }
+        if (surprised === void 0) { surprised = false; }
         this.location = location;
         this.isHidden = isHidden;
         this.lookingAt = lookingAt;
-        this.spooked = spooked;
+        this.surprised = surprised;
     }
     Cat.prototype.reset = function () {
         this.isHidden = true;
         this.lookingAt = undefined;
-        this.spooked = false;
+        this.surprised = false;
     };
-    Cat.prototype.show = function () {
+    Cat.prototype.showYourself = function () {
         this.isHidden = false;
     };
     Cat.prototype.lookAt = function (x, y) {
@@ -23,9 +23,12 @@ var Cat = (function () {
         noStroke();
         fill('red');
         imageMode('center');
-        var h = width;
-        var w = 0.9116684841875682 * h;
-        image(catImage, this.location.x, this.location.y, w, h);
+        var img = this.surprised
+            ? catSurprised
+            : catImage;
+        var ratio = img.height / img.width;
+        var w = 500, h = w * ratio;
+        image(img, this.location.x, this.location.y, w, h);
         this.drawEye(createVector(this.location.x - width * 0.14, this.location.y + width * 0.0625));
         this.drawEye(createVector(this.location.x + width * 0.14, this.location.y + width * 0.0625));
     };
@@ -36,7 +39,8 @@ var Cat = (function () {
                 .limit(width * 0.025);
             location.add(t);
         }
-        this.drawupil(location);
+        if (!this.surprised)
+            this.drawupil(location);
     };
     Cat.prototype.drawupil = function (location) {
         var ratio = 0.9852941176470589;
@@ -49,35 +53,35 @@ var Cat = (function () {
 var cat;
 var catImage;
 var pupilImage;
+var backgroundImage;
+var catSurprised;
+var themeSong;
 function preload() {
     catImage = loadImage('../assets/eyecat.png');
     pupilImage = loadImage('../assets/pupil.png');
+    backgroundImage = loadImage('../assets/background.jpg');
+    catSurprised = loadImage('../assets/eyecatsurprise.png');
+    themeSong = loadSound('../assets/Theme.mp3');
 }
 function setup() {
-    var canvas = createCanvas(800, 800);
-    if (document.getElementById('canvas'))
-        canvas.parent('canvas');
-    cat = new Cat(createVector(width / 2, height - width * 0.3125));
+    var canvas = createCanvas(600, 600);
+    cat = new Cat(createVector(width / 2, height - 250));
+    themeSong.loop();
 }
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+function main() {
+    cat.showYourself();
+    cat.lookAt(mouseX, mouseY);
+    if (mouseIsPressed)
+        cat.surprised = true;
 }
 function draw() {
     background('white');
+    imageMode(CORNER);
+    background(backgroundImage);
     cat.reset();
     main();
-    var speed = 5;
-    cat.location.x = width / 2;
-    cat.location.y = cat.isHidden
-        ? Math.min(height - height * 0.3125, cat.location.y + speed)
-        : Math.max(height * 0.4375, cat.location.y - speed);
-    cat.draw();
-}
-function main() {
-    cat.show();
-    cat.lookAt(mouseX, mouseY);
-    if (mouseIsPressed)
-        cat.spooked = true;
+    if (!cat.isHidden)
+        cat.draw();
 }
 var Cat = (function () {
     function Cat(location, isHidden, lookingAt, spooked) {
