@@ -1,6 +1,6 @@
 # Welcome to Codacat!!
 
-##Contributors:
+## Contributors:
 1. Anas Shahid
 2. Alex Laquerre
 3. Sheikh Rahman
