@@ -1,5 +1,12 @@
 # Welcome to Codacat!!
 
+##Contributors:
+1. Anas Shahid
+2. Alex Laquerre
+3. Sheikh Rahman
+4. Christina Lin
+
+
 ## How to run:
 <ul>
   <li>Clone the package</li>
